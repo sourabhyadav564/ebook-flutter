@@ -15,6 +15,8 @@ class UploadSheet extends ConsumerStatefulWidget {
 }
 
 class _UploadSheetState extends ConsumerState<UploadSheet> {
+  static const _maxFileSizeBytes = 50 * 1024 * 1024; // 50 MB
+
   final _formKey    = GlobalKey<FormState>();
   final _titleCtrl  = TextEditingController();
   final _authorCtrl = TextEditingController();
@@ -36,19 +38,33 @@ class _UploadSheetState extends ConsumerState<UploadSheet> {
       type: FileType.custom,
       allowedExtensions: ['pdf', 'epub'],
     );
-    if (result != null && result.files.single.path != null) {
-      setState(() {
-        _selectedFile = File(result.files.single.path!);
-        _fileName     = result.files.single.name;
-        // Pre-fill title from filename if empty
-        if (_titleCtrl.text.isEmpty) {
-          _titleCtrl.text = result.files.single.name
-              .replaceAll(RegExp(r'\.(pdf|epub)$', caseSensitive: false), '')
-              .replaceAll('_', ' ')
-              .replaceAll('-', ' ');
-        }
-      });
+    if (result == null || result.files.single.path == null) return;
+
+    final pickedFile = File(result.files.single.path!);
+    final fileSize   = await pickedFile.length();
+
+    if (fileSize > _maxFileSizeBytes) {
+      if (mounted) {
+        showErrorSnackbar(
+          context,
+          'File is too large (${(fileSize / (1024 * 1024)).toStringAsFixed(1)} MB). '
+          'Maximum allowed size is 50 MB.',
+        );
+      }
+      return;
     }
+
+    setState(() {
+      _selectedFile = pickedFile;
+      _fileName     = result.files.single.name;
+      // Pre-fill title from filename if empty
+      if (_titleCtrl.text.isEmpty) {
+        _titleCtrl.text = result.files.single.name
+            .replaceAll(RegExp(r'\.(pdf|epub)$', caseSensitive: false), '')
+            .replaceAll('_', ' ')
+            .replaceAll('-', ' ');
+      }
+    });
   }
 
   Future<void> _submit() async {
