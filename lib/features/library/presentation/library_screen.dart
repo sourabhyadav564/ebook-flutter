@@ -36,7 +36,7 @@ class LibraryScreen extends ConsumerWidget {
         key: const Key('upload_fab'),
         onPressed: () => _showUpload(context, ref),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Book'),
+        label: const Text('Add Books'),
       ).animate().slideY(begin: 1, duration: 400.ms).fadeIn(),
       body: ebooksAsync.when(
         loading: () => const _ShimmerShelf(),
