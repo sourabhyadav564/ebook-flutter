@@ -7,7 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/models/ebook.dart';
 import '../../../shared/widgets/error_widget.dart';
 import '../../upload/presentation/upload_sheet.dart';
-import 'shelf_widget.dart';
+import 'helf_widget.dart';
 import 'empty_shelf.dart';
 
 class LibraryScreen extends ConsumerWidget {
@@ -35,7 +35,7 @@ class LibraryScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         key: const Key('upload_fab'),
         onPressed: () {
-          if (ref != null) {
+          if (ref!= null) {
             _showUpload(context, ref);
           }
         },
@@ -49,7 +49,7 @@ class LibraryScreen extends ConsumerWidget {
           onRetry: () => ref.refresh(ebooksProvider(const EbooksFilter())),
         ),
         data:    (ebooks) => ebooks.isEmpty
-            ? const EmptyShelf()
+             const EmptyShelf()
             : ShelfWidget(ebooks: ebooks),
       ),
     );
@@ -84,8 +84,8 @@ class _ShimmerShelf extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
       )
-          .animate(onPlay: (c) => c.repeat())
-          .shimmer(duration: 1200.ms, color: AppColors.accent.withOpacity(0.15)),
+          animate(onPlay: (c) => c.repeat())
+          shimmer(duration: 1200.ms, color: AppColors.accent.withOpacity(0.15)),
     );
   }
 }
