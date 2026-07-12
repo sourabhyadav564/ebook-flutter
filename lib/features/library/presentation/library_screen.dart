@@ -34,7 +34,11 @@ class LibraryScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         key: const Key('upload_fab'),
-        onPressed: () => _showUpload(context, ref),
+        onPressed: () {
+          if (ref != null) {
+            _showUpload(context, ref);
+          }
+        },
         icon: const Icon(Icons.add_rounded),
         label: const Text('Add Books'),
       ).animate().slideY(begin: 1, duration: 400.ms).fadeIn(),
