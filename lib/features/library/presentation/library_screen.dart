@@ -41,7 +41,7 @@ class LibraryScreen extends ConsumerWidget {
         },
         icon: const Icon(Icons.add_rounded),
         label: const Text('Add Books'),
-      ).animate().slideY(begin: 1, duration: 400.ms).fadeIn(),
+      ).animate().slideY(begin: 0.5, duration: 400.ms).fadeIn(),
       body: ebooksAsync.when(
         loading: () => const _ShimmerShelf(),
         error:   (err, _) => AppErrorWidget(
